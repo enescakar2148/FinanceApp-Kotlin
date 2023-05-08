@@ -55,7 +55,7 @@ class Home : AppCompatActivity() {
             }
         })
 
-        pie.title("Toplam ${wage} gelir ve Harcama dağılım grafiği")
+        pie.title("Toplam ${wage} gelir ve Harcama dağılım grafiği güncelleme")
 
         binding.anyChartView.setChart(pie)
 
