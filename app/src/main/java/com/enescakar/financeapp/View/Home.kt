@@ -3,6 +3,7 @@ package com.enescakar.financeapp.View
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.anychart.AnyChart
 import com.anychart.chart.common.dataentry.DataEntry
 import com.anychart.chart.common.dataentry.ValueDataEntry
@@ -10,23 +11,26 @@ import com.anychart.chart.common.listener.Event
 import com.anychart.chart.common.listener.ListenersInterface
 import com.anychart.charts.Pie
 import com.enescakar.financeapp.Model.Expense
+import com.enescakar.financeapp.Model.Income
+import com.enescakar.financeapp.ViewModel.HomeViewModel
 import com.enescakar.financeapp.databinding.ActivityHomeBinding
 import java.time.LocalTime
 
 
 class Home : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
+    private lateinit var homeViewModel: HomeViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
-        val pie : Pie = AnyChart.pie()
+        homeViewModel = HomeViewModel()
+        homeViewModel.datas()
 
-        //Demo Data
-        val wage = 12500
-        val data: MutableList<DataEntry> = ArrayList()
+        //Create Chart-> Pie Chart
+        val pie : Pie = AnyChart.pie()
 
         /*
         Todo: ANYCHART BENİM MODEL SINIFIMI DESTEKLEMİYOR
@@ -37,17 +41,13 @@ class Home : AppCompatActivity() {
          */
 
         //data.add(Expense(2500, "Yakıt", LocalTime.now())
+        observeData(pie)
 
-        data.add(ValueDataEntry("yakıt", 2250))
-        data.add(ValueDataEntry("yemek", 3000))
-        data.add(ValueDataEntry("telekominasyon", 235))
-        data.add(ValueDataEntry("alışveriş", 3234.5))
-
-        pie.data(data)
         pie.setOnClickListener(object :
             ListenersInterface.OnClickListener(arrayOf<String>("x", "value")) {
             override fun onClick(event: Event) {
                 Toast.makeText(
+                    // TODO: BURADA BASTIKTAN SONRA YENİ SAYFADA BU HARCAMAYA AİT DETAYLAR GÖSTERİLİR
                     this@Home,
                     event.getData().get("x") + ":" + event.getData().get("value"),
                     Toast.LENGTH_SHORT
@@ -55,9 +55,16 @@ class Home : AppCompatActivity() {
             }
         })
 
-        pie.title("Toplam ${wage} gelir ve Harcama dağılım grafiği güncelleme")
-
         binding.anyChartView.setChart(pie)
+    }
 
+    private fun observeData(pie: Pie){
+        homeViewModel.expense.observe(this, Observer {
+            pie.data(it)
+        })
+        homeViewModel.income.observe(this, Observer {
+            pie.title("Toplam ${it.wage} gelir ve Harcama dağılım grafiği güncelleme")
+
+        })
     }
 }
