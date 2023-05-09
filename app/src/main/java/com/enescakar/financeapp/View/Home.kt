@@ -1,20 +1,17 @@
 package com.enescakar.financeapp.View
 
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.anychart.AnyChart
-import com.anychart.chart.common.dataentry.DataEntry
-import com.anychart.chart.common.dataentry.ValueDataEntry
 import com.anychart.chart.common.listener.Event
 import com.anychart.chart.common.listener.ListenersInterface
 import com.anychart.charts.Pie
-import com.enescakar.financeapp.Model.Expense
-import com.enescakar.financeapp.Model.Income
+import com.enescakar.financeapp.Util.StatusBuilder
 import com.enescakar.financeapp.ViewModel.HomeViewModel
 import com.enescakar.financeapp.databinding.ActivityHomeBinding
-import java.time.LocalTime
 
 
 class Home : AppCompatActivity() {
@@ -34,13 +31,8 @@ class Home : AppCompatActivity() {
 
         /*
         Todo: ANYCHART BENİM MODEL SINIFIMI DESTEKLEMİYOR
-        TODO: BU NEDENLE MODEL CLASSTAN İŞLEMLERİ YAPMAM VE DATAENTRY'E VERMEM GEREKİR
-        TODO: DAHA DETAY VERİRSEM HARCAMA GRAFİĞİNİ OLUŞTURMAK İÇİN EXPENSE MODEL KULLANARAK HARCAMALARI OLUŞTURMAM/TOPLAMAM
-        TODO: VE BÜTÜN OLUŞAN DATALAR İÇİNDEN GEREKEN (KATEGORİ İSMİ VE TUTAR -> (X, VALUE)
-        TODO: ALIP GEREKEN YERE VERMEM GEREKİR. VALUE KISMINA İSE BİR KATEGORİYE AİT DEĞERLERİN TOPLAMINI SUNMAM GEREKİR
          */
 
-        //data.add(Expense(2500, "Yakıt", LocalTime.now())
         observeData(pie)
 
         pie.setOnClickListener(object :
@@ -59,12 +51,26 @@ class Home : AppCompatActivity() {
     }
 
     private fun observeData(pie: Pie){
-        homeViewModel.expense.observe(this, Observer {
+        homeViewModel.expenseChart.observe(this, Observer {
             pie.data(it)
         })
         homeViewModel.income.observe(this, Observer {
             pie.title("Toplam ${it.wage} gelir ve Harcama dağılım grafiği güncelleme")
-
+        })
+        homeViewModel.status.observe(this, Observer {
+            if (it.status == StatusBuilder().Bad()){
+                binding.statusText.setBackgroundResource(android.R.color.holo_red_light)
+                binding.statusText.text = "Durum: Kritik\n" +
+                        "Harcamalarınız Gelir seviyenizin yarısından fazla!"
+            }else if(it.status == StatusBuilder().Middle()){
+                binding.statusText.setBackgroundResource(android.R.color.holo_orange_light)
+                binding.statusText.text = "Durum: Orta\n" +
+                        "Harcamalarınız Gelir seviyenizin yarısından az."
+            }else{
+                binding.statusText.setBackgroundResource(android.R.color.holo_green_light)
+                binding.statusText.text = "Durum: Güzel\n" +
+                        "Harcamalarınız Gelir seviyenizin çeyreğinden az."
+            }
         })
     }
 }
