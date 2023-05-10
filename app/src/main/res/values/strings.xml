@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FinanceApp</string>
+    <string name="home_hi_text">Merhaba!</string>
 </resources>

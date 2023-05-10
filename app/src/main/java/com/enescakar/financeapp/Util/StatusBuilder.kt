@@ -1,7 +1,5 @@
 package com.enescakar.financeapp.Util
 
-import com.enescakar.financeapp.Model.Status
-
 open class StatusBuilder {
 
     fun Bad(): Int {

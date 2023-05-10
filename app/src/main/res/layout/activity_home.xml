@@ -1,40 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.Home">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:context=".View.Home">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:paddingTop="24dp"
+            android:text="@string/home_hi_text"
+            android:textColor="@android:color/holo_purple"
+            android:textSize="32sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="24dp" />
+
+        <com.anychart.AnyChartView
+            android:id="@+id/any_chart_view"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            tools:layout_editor_absoluteY="66dp" />
+
+        <TextView
+            android:id="@+id/statusText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_orange_light"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteY="365dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/homeRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
+        android:onClick="addExpenses"
         android:layout_height="wrap_content"
-        android:text="Merhaba!"
-        android:textColor="@android:color/holo_purple"
-        android:textSize="32sp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="24dp"
-        android:paddingHorizontal="10dp"
-        android:paddingTop="24dp"/>
-
-    <com.anychart.AnyChartView
-        android:id="@+id/any_chart_view"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        tools:layout_editor_absoluteY="66dp" />
-
-    <TextView
-        android:id="@+id/statusText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="Durum: Kritik!"
-        android:textSize="22sp"
-        android:textColor="@color/white"
-        android:background="@android:color/holo_orange_light"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_add"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="365dp" />
-</LinearLayout>
+        android:importantForAccessibility="no" />
+</androidx.constraintlayout.widget.ConstraintLayout>
